@@ -1,13 +1,32 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
-workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
-    jobs:
-      - welcome/run
+version: 2.0
+
+jobs:
+ build1: # job name
+   docker: # Specifies the primary container image,
+     - image: buildpack-deps:trusty
+       auth:
+         username: younesjounes
+         password: $18831883  # context / project UI env-var reference
+     - image: postgres:9.4.1 # Specifies the database image
+       auth:
+         username: younesjounes
+         password: $18831883  # context / project UI env-var reference
+      # for the secondary or service container run in a common
+      # network where ports exposed on the primary container are
+      # available on localhost.
+       environment: # Specifies the POSTGRES_USER authentication
+        # environment variable, see circleci.com/docs/2.0/env-vars/
+        # for instructions about using environment variables.
+         POSTGRES_USER: root
+#...
+ build2:
+   machine: # Specifies a machine image that uses
+   # an Ubuntu version 14.04 image with Docker 17.06.1-ce
+   # and docker-compose 1.14.0, follow CircleCI Discuss Announcements
+   # for new image releases.
+     image: ubuntu-1604:201903-01
+#...       
+ build3:
+   macos: # Specifies a macOS virtual machine with Xcode version 11.3
+     xcode: "11.3.0"
+# ...          
