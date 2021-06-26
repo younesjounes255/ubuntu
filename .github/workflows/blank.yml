@@ -1,0 +1,2 @@
+- name: Check Ansible Ubuntu xenial
+  uses: roles-ansible/check-ansible-ubuntu-xenial-action@0.4.1
